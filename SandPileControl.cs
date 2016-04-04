@@ -16,7 +16,6 @@ namespace SandPile {
         private StringFormat mStringFormat = new StringFormat();
         private Font taskFont;
         private bool isDebugMode;
-        private bool energyAware;
 
         public SandPileControl() {
             InitializeComponent();
@@ -79,8 +78,10 @@ namespace SandPile {
 
                                 case VisualStyle.SmallRectangles:
                                 case VisualStyle.LargeRectangles:
-                                    if(isDebugMode)
+                                    if (isDebugMode) {
+                                        Console.WriteLine("has info, node = [" + i + ", " + j + "]");
                                         g.FillRectangle(fillBrush, x, y + (SandPileMatrix.SN - nodes[i][j].Count) * 9, mNodeSize, nodes[i][j].Count * 9);
+                                    }
                                     break;
                             }
                         }
@@ -97,11 +98,14 @@ namespace SandPile {
 
                             case VisualStyle.LargeRectangles:
                                 //if (nodes[i][j].Count == SandPileMatrix.SN) {
-                                if(nodes[i][j].isEnabled && isDebugMode) {
+                                if (nodes[i][j].isEnabled && isDebugMode)
+                                {
                                     g.FillRectangle(fillBrush, x, y + (SandPileMatrix.SN - nodes[i][j].Count) * 9, mNodeSize, nodes[i][j].Count * 9);
                                 }
+                                
                                 int[] tasks = nodes[i][j].Tasks;
                                 bool isEnabled = nodes[i][j].isEnabled;
+                                bool isBusy = nodes[i][j].isBusy;
                                 float h = mNodeSize / SandPileNode.TasksCount;
                                 float w = mNodeSize / 2;
                                 if (isEnabled)
@@ -114,7 +118,13 @@ namespace SandPile {
 
                                         if (tasks[k] == 0)
                                         {
-                                            taskBrush = Brushes.White;
+                                            if (isBusy)
+                                            {
+                                                taskBrush = Brushes.White;
+                                            }
+                                            else {
+                                                taskBrush = Brushes.Cyan;
+                                            }
                                         }
                                         else
                                         {
@@ -165,9 +175,9 @@ namespace SandPile {
         }
 
         public void create(int width, int height, bool isDebugMode, bool isEnergyAware) {
-            mMatrix.create(width, height);
-            this.isDebugMode = isDebugMode;
             this.isEnergyAware = isEnergyAware;
+            mMatrix.create(width, height, isEnergyAware);
+            this.isDebugMode = isDebugMode;
             AutoScrollMinSize = new Size(width * mNodeSize + (width - 1) * mNodeSpacing,
                 height * mNodeSize + (height - 1) * mNodeSpacing);
         }
@@ -209,13 +219,13 @@ namespace SandPile {
         }
 
         private void OnMouseDown(object sender, MouseEventArgs e) {
-            
+
             int x = e.X - AutoScrollPosition.X;
             int y = e.Y - AutoScrollPosition.Y;
             int i = y / (mNodeSize + mNodeSpacing);
             int j = x / (mNodeSize + mNodeSpacing);
 
-            if (i < 0 || j < 0 || i >= mMatrix.Height || j >= mMatrix.Width) {
+            if (i < 0 || j < 0 || i >= mMatrix.Height || j >= mMatrix.Width || this.isEnergyAware) {
                 return;
             }
 

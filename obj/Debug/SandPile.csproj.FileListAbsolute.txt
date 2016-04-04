@@ -8,3 +8,13 @@ C:\Users\william\Downloads\SandPile\SandPile\obj\Debug\SandPile.SandPileControl.
 C:\Users\william\Downloads\SandPile\SandPile\obj\Debug\SandPile.csproj.GenerateResource.Cache
 C:\Users\william\Downloads\SandPile\SandPile\obj\Debug\SandPile.exe
 C:\Users\william\Downloads\SandPile\SandPile\obj\Debug\SandPile.pdb
+C:\Users\william\Downloads\SandPile\SandPile\SandPile\bin\Debug\SandPile.exe.config
+C:\Users\william\Downloads\SandPile\SandPile\SandPile\obj\Debug\SandPile.exe
+C:\Users\william\Downloads\SandPile\SandPile\SandPile\obj\Debug\SandPile.pdb
+C:\Users\william\Downloads\SandPile\SandPile\SandPile\bin\Debug\SandPile.exe
+C:\Users\william\Downloads\SandPile\SandPile\SandPile\bin\Debug\SandPile.pdb
+C:\Users\william\Downloads\SandPile\SandPile\SandPile\obj\Debug\SandPile.csprojResolveAssemblyReference.cache
+C:\Users\william\Downloads\SandPile\SandPile\SandPile\obj\Debug\SandPile.Form1.resources
+C:\Users\william\Downloads\SandPile\SandPile\SandPile\obj\Debug\SandPile.Properties.Resources.resources
+C:\Users\william\Downloads\SandPile\SandPile\SandPile\obj\Debug\SandPile.SandPileControl.resources
+C:\Users\william\Downloads\SandPile\SandPile\SandPile\obj\Debug\SandPile.csproj.GenerateResource.Cache

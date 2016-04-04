@@ -12,12 +12,14 @@ namespace SandPile {
         private List<int> mIndexes = new List<int>();
         private int mBroadcastStepsCount;
         private int mBroadcastHoldersCount;
+        private bool isEnergyAware;
 
         public SandPileMatrix() {
 
         }
 
-        public void create(int width, int height) {
+        public void create(int width, int height, bool isEnergyAware) {
+            this.isEnergyAware = isEnergyAware;
             mNodes = new SandPileNode[height][];
             for (int i = 0; i < mNodes.Length; ++i) {
                 mNodes[i] = new SandPileNode[width];
@@ -322,46 +324,60 @@ namespace SandPile {
             for (int i = 0; i < mNodes.Length; ++i) {
                 for (int j = 0; j < mNodes[i].Length; ++j) {
                     SandPileNode currentNode = mNodes[i][j];
+                    Console.WriteLine("node = " + currentNode + ", state = " + currentNode.isBusy);
                     //if (currentNode.Count == SN && currentNode.isEnabled) {
                     if (currentNode.Count == SN) {
                         currentNode.Count = currentNode.Count - SN;// getNumOfNeighbours(i, j);
                         //Console.WriteLine("[" + i + ", " + j + "] = " + getNumOfNeighbours(i, j));
+                        int decreaseCount = 0;
                         foreach (SandPileNode node in getNeighbours(i, j)) {
                             //if (!node.isBusy)
                             {
                                 node.Count++;
-                                if (node.HasFreeTask && node.isEnabled && !node.isBusy)
+                                if (node.HasFreeTask && node.isEnabled)
                                 {
                                     node.addTask(currentNode.popTask());
                                 }
-                                Array.Sort(node.Tasks);
+                                decreaseCount++;
+                                //Array.Sort(node.Tasks);
                             }
                         }
+                        //currentNode.Count = currentNode.Count - decreaseCount;
+
                     }
-                    Array.Sort(currentNode.Tasks);
+
+                    if (!currentNode.isBusy)
+                    {
+                        Array.Sort(currentNode.Tasks);
+                        //PartialSort(currentNode.Tasks, SN, SandPileNode.TasksCount);
+                    }
                 }
             }
 
             for (int i = 0; i < mNodes.Length; ++i) {
                 for (int j = 0; j < mNodes[i].Length; ++j) {
                     SandPileNode currentNode = mNodes[i][j];
-                    //if (currentNode.isEnabled)
+                    if (!currentNode.isBusy)
                     {
                         currentNode.decreaseTasks();
                         Array.Sort(currentNode.Tasks);
                     }
                 }
             }
-        }
-
+        } 
+        
         public int getActiveTaskCount() {
             int count = 0;
             for (int i = 0; i < mNodes.Length; ++i)
             {
                 for (int j = 0; j < mNodes[i].Length; ++j)
                 {
-                    if (mNodes[i][j].isEnabled && mNodes[i][j].HasInfo) {
-                        count += mNodes[i][j].Count;
+                    if (mNodes[i][j].isEnabled) {
+                        for (int taskIdx = 0; taskIdx < SandPileMatrix.SN; taskIdx++)
+                        {
+                            if(mNodes[i][j].Tasks[taskIdx] != 0)
+                                count += 1;
+                        }
                     }
                 }
             }

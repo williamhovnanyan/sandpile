@@ -69,7 +69,7 @@ namespace SandPile {
             
             for (int i = 0; i < procCount; ++i) {
                 matrixes[i] = new SandPileMatrix();
-                matrixes[i].create(sandPileControl.SandPileMatrix.Width, sandPileControl.SandPileMatrix.Height);
+                matrixes[i].create(sandPileControl.SandPileMatrix.Width, sandPileControl.SandPileMatrix.Height, sandPileControl.isEnergyAware);
                 stats[i] = new Statistics();
             }
 
@@ -147,7 +147,7 @@ namespace SandPile {
 
             for (int i = 0; i < procCount; ++i) {
                 matrixes[i] = new SandPileMatrix();
-                matrixes[i].create(sandPileControl.SandPileMatrix.Width, sandPileControl.SandPileMatrix.Height);
+                matrixes[i].create(sandPileControl.SandPileMatrix.Width, sandPileControl.SandPileMatrix.Height, checkBoxEnergyAware.Checked);
                 steps[i] = 0;
             }
 
@@ -222,6 +222,10 @@ namespace SandPile {
         }
 
         private void OnTaskTimerTick(object sender, EventArgs e) {
+            if (this.checkBoxEnergyAware.Checked) {
+                updateNodesStatus();
+            }
+
             sandPileControl.SandPileMatrix.doTasksStep();
             sandPileControl.Invalidate();
         }
@@ -264,7 +268,12 @@ namespace SandPile {
                     for (int k = 0; k < count; ++k)
                     {
                         if (matrix.Nodes[i][j].isEnabled)
+                            matrix.Nodes[i][j].isBusy = false;
                             matrix.Nodes[i][j].addTask(time);
+                    }
+
+                    if (checkBoxEnergyAware.Checked) {
+                        updateNodesStatus();
                     }
 
                     sandPileControl.Invalidate();
@@ -272,9 +281,52 @@ namespace SandPile {
             }
         }
 
+        private void updateNodesStatus()
+        {
+            SandPileMatrix sandPileMatrix = sandPileControl.SandPileMatrix;
+            int activeTaskCount = sandPileMatrix.getActiveTaskCount();
+            int neededNodeCount = (int)Math.Ceiling((double)activeTaskCount / (SandPileNode.TasksCount - SandPileMatrix.SN)); 
+
+            SandPileNode[][] nodes = sandPileMatrix.Nodes;
+            for (int i = 0; i < nodes.Length; ++i)
+            {
+                for (int j = 0; j < nodes[i].Length; ++j)
+                {
+                    bool isNodeBusy = true;
+                    for (int taskIdx = SandPileMatrix.SN; taskIdx < nodes[i][j].Tasks.Length; taskIdx++)
+                    {
+                        if (nodes[i][j].Tasks[taskIdx] > 0)
+                        {
+                            isNodeBusy = false;
+                            break;
+                        }
+                    }
+                    nodes[i][j].isBusy = isNodeBusy;
+
+                    Random randomGen = new Random();
+                    List<int> randomIdxList = new List<int>();
+                    while (randomIdxList.Count <= neededNodeCount) {
+                        int nextRandomIdx = randomGen.Next(nodes.Length * nodes[i].Length);
+                        if (!randomIdxList.Contains(nextRandomIdx)) {
+                            randomIdxList.Add(nextRandomIdx);
+                        }
+                    }
+
+                    if (randomIdxList.Contains(i * nodes.Length + j)) {
+                        nodes[i][j].isBusy = false;
+                    }
+                }
+            }            
+        }
+
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
                 sandPileControl.setCheckedStatus(checkBox1.Checked);
+        }
+
+        private void checkBoxEnergyAware_CheckStateChanged(object sender, EventArgs e)
+        {
+            sandPileControl.isEnergyAware = checkBoxEnergyAware.Checked;
         }
 
         

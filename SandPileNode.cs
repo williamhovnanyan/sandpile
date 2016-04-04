@@ -23,15 +23,20 @@ namespace SandPile {
         }
 
         public void addTask(int time) {
+            int startIdx = 0;
             if (!isBusy)
             {
-                for (int i = TasksCount - 1; i >= 0; i--)
+                startIdx = TasksCount - 1;
+            }
+            else {
+                startIdx = TasksCount - 4;
+            }
+            for (int i = startIdx; i >= 0; i--)
+            {
+                if (tasks[i] == 0)
                 {
-                    if (tasks[i] == 0)
-                    {
-                        tasks[i] = time;
-                        break;
-                    }
+                    tasks[i] = time;
+                    break;
                 }
             }
         }
@@ -48,7 +53,7 @@ namespace SandPile {
         }
 
         public void decreaseTasks() {
-            for (int i = TasksCount - 4; i < TasksCount; ++i) {
+            for (int i = TasksCount - 3; i < TasksCount; ++i) {
                 if (tasks[i] > 0) {
                     tasks[i]--;
                 }

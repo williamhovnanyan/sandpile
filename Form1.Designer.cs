@@ -72,11 +72,11 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.checkBoxEnergyAware = new System.Windows.Forms.CheckBox();
             this.timesTextBox = new System.Windows.Forms.TextBox();
             this.fillButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.checkBoxEnergyAware = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.visualStylesComboBox = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -591,16 +591,6 @@
             this.panel3.Size = new System.Drawing.Size(239, 35);
             this.panel3.TabIndex = 5;
             // 
-            // checkBoxEnergyAware
-            // 
-            this.checkBoxEnergyAware.AutoSize = true;
-            this.checkBoxEnergyAware.Location = new System.Drawing.Point(142, 85);
-            this.checkBoxEnergyAware.Name = "checkBoxEnergyAware";
-            this.checkBoxEnergyAware.Size = new System.Drawing.Size(92, 17);
-            this.checkBoxEnergyAware.TabIndex = 2;
-            this.checkBoxEnergyAware.Text = "Energy Aware";
-            this.checkBoxEnergyAware.UseVisualStyleBackColor = true;
-            // 
             // timesTextBox
             // 
             this.timesTextBox.Location = new System.Drawing.Point(117, 4);
@@ -644,6 +634,17 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(239, 125);
             this.panel2.TabIndex = 4;
+            // 
+            // checkBoxEnergyAware
+            // 
+            this.checkBoxEnergyAware.AutoSize = true;
+            this.checkBoxEnergyAware.Location = new System.Drawing.Point(142, 85);
+            this.checkBoxEnergyAware.Name = "checkBoxEnergyAware";
+            this.checkBoxEnergyAware.Size = new System.Drawing.Size(92, 17);
+            this.checkBoxEnergyAware.TabIndex = 2;
+            this.checkBoxEnergyAware.Text = "Energy Aware";
+            this.checkBoxEnergyAware.UseVisualStyleBackColor = true;
+            this.checkBoxEnergyAware.CheckStateChanged += new System.EventHandler(this.checkBoxEnergyAware_CheckStateChanged);
             // 
             // checkBox1
             // 
@@ -748,6 +749,7 @@
             this.sandPileControl.AutoScrollMinSize = new System.Drawing.Size(2000, 2000);
             this.sandPileControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.sandPileControl.Font = new System.Drawing.Font("Microsoft Sans Serif", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.sandPileControl.isEnergyAware = false;
             this.sandPileControl.Location = new System.Drawing.Point(250, 0);
             this.sandPileControl.Name = "sandPileControl";
             this.sandPileControl.Size = new System.Drawing.Size(376, 616);
