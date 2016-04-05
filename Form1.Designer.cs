@@ -107,7 +107,7 @@
             this.statusToolLabel,
             this.toolStripStatusLabel3,
             this.matrixesProcessedStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 616);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 596);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(626, 24);
             this.statusStrip1.TabIndex = 0;
@@ -168,7 +168,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(250, 616);
+            this.panel1.Size = new System.Drawing.Size(250, 596);
             this.panel1.TabIndex = 1;
             // 
             // panel6
@@ -183,7 +183,7 @@
             this.panel6.Controls.Add(this.label17);
             this.panel6.Controls.Add(this.taskCountTextBox);
             this.panel6.Controls.Add(this.taskTimeTextBox);
-            this.panel6.Location = new System.Drawing.Point(4, 511);
+            this.panel6.Location = new System.Drawing.Point(4, 496);
             this.panel6.Name = "panel6";
             this.panel6.Size = new System.Drawing.Size(239, 100);
             this.panel6.TabIndex = 7;
@@ -281,7 +281,7 @@
             this.panel5.Controls.Add(this.label16);
             this.panel5.Controls.Add(this.gossipFillButton);
             this.panel5.Controls.Add(this.label9);
-            this.panel5.Location = new System.Drawing.Point(4, 409);
+            this.panel5.Location = new System.Drawing.Point(3, 390);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(239, 100);
             this.panel5.TabIndex = 6;
@@ -376,7 +376,7 @@
             this.panel4.Controls.Add(this._0TextCount);
             this.panel4.Controls.Add(this.label3);
             this.panel4.Controls.Add(this.label2);
-            this.panel4.Location = new System.Drawing.Point(4, 176);
+            this.panel4.Location = new System.Drawing.Point(4, 157);
             this.panel4.Name = "panel4";
             this.panel4.Size = new System.Drawing.Size(239, 227);
             this.panel4.TabIndex = 6;
@@ -586,7 +586,7 @@
             this.panel3.Controls.Add(this.timesTextBox);
             this.panel3.Controls.Add(this.fillButton);
             this.panel3.Controls.Add(this.label8);
-            this.panel3.Location = new System.Drawing.Point(4, 135);
+            this.panel3.Location = new System.Drawing.Point(4, 116);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(239, 35);
             this.panel3.TabIndex = 5;
@@ -632,7 +632,7 @@
             this.panel2.Controls.Add(this.heightTextBox);
             this.panel2.Location = new System.Drawing.Point(4, 4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(239, 125);
+            this.panel2.Size = new System.Drawing.Size(239, 106);
             this.panel2.TabIndex = 4;
             // 
             // checkBoxEnergyAware
@@ -752,7 +752,7 @@
             this.sandPileControl.isEnergyAware = false;
             this.sandPileControl.Location = new System.Drawing.Point(250, 0);
             this.sandPileControl.Name = "sandPileControl";
-            this.sandPileControl.Size = new System.Drawing.Size(376, 616);
+            this.sandPileControl.Size = new System.Drawing.Size(376, 596);
             this.sandPileControl.TabIndex = 2;
             this.sandPileControl.Text = "sandPileControl";
             this.sandPileControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.OnSandPileMouseDown);
@@ -761,7 +761,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(626, 640);
+            this.ClientSize = new System.Drawing.Size(626, 620);
             this.Controls.Add(this.sandPileControl);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.statusStrip1);

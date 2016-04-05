@@ -13,6 +13,7 @@ namespace SandPile {
         private int mBroadcastStepsCount;
         private int mBroadcastHoldersCount;
         private bool isEnergyAware;
+        private Random randomGen = new Random();
 
         public SandPileMatrix() {
 
@@ -324,13 +325,16 @@ namespace SandPile {
             for (int i = 0; i < mNodes.Length; ++i) {
                 for (int j = 0; j < mNodes[i].Length; ++j) {
                     SandPileNode currentNode = mNodes[i][j];
-                    Console.WriteLine("node = " + currentNode + ", state = " + currentNode.isBusy);
+                    //Console.WriteLine("node = " + currentNode + ", state = " + currentNode.isBusy);
                     //if (currentNode.Count == SN && currentNode.isEnabled) {
                     if (currentNode.Count == SN) {
                         currentNode.Count = currentNode.Count - SN;// getNumOfNeighbours(i, j);
                         //Console.WriteLine("[" + i + ", " + j + "] = " + getNumOfNeighbours(i, j));
                         int decreaseCount = 0;
-                        foreach (SandPileNode node in getNeighbours(i, j)) {
+                        IEnumerable<SandPileNode> neighbours = getNeighbours(i, j);
+                        neighbours = neighbours.OrderBy(el => randomGen.Next());
+                        //Console.WriteLine("ordered list is " + neighbours.Max());
+                        foreach (SandPileNode node in neighbours) {
                             //if (!node.isBusy)
                             {
                                 node.Count++;

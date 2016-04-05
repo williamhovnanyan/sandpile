@@ -20,6 +20,8 @@ namespace SandPile {
             visualStylesComboBox.Items.Clear();
             visualStylesComboBox.Items.AddRange(Enum.GetNames(typeof(VisualStyle)));
             visualStylesComboBox.SelectedIndex = 2;
+
+            this.taskTimer.Interval = 200;
             create();
         }
 
@@ -222,6 +224,7 @@ namespace SandPile {
         }
 
         private void OnTaskTimerTick(object sender, EventArgs e) {
+            Console.WriteLine("on timertick " + DateTime.Now.ToString("HH:mm:ss tt"));
             if (this.checkBoxEnergyAware.Checked) {
                 updateNodesStatus();
             }
@@ -302,7 +305,7 @@ namespace SandPile {
                         }
                     }
                     nodes[i][j].isBusy = isNodeBusy;
-
+/*
                     Random randomGen = new Random();
                     List<int> randomIdxList = new List<int>();
                     while (randomIdxList.Count <= neededNodeCount) {
@@ -311,8 +314,8 @@ namespace SandPile {
                             randomIdxList.Add(nextRandomIdx);
                         }
                     }
-
-                    if (randomIdxList.Contains(i * nodes.Length + j)) {
+    */
+                    if (i * nodes.Length + j < neededNodeCount) {
                         nodes[i][j].isBusy = false;
                     }
                 }
