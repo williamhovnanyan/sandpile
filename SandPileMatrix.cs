@@ -13,7 +13,6 @@ namespace SandPile {
         private int mBroadcastStepsCount;
         private int mBroadcastHoldersCount;
         private bool isEnergyAware;
-        private Random randomGen = new Random();
 
         public SandPileMatrix() {
 
@@ -50,7 +49,7 @@ namespace SandPile {
         public SandPileNode getLeft(int i, int j) {
             SandPileNode returnNode = null;
             if (j == 0) {
-                returnNode = mNodes[i][mNodes[i].Length - 1];
+                returnNode = mNodes[i][mNodes[i].Length - 1];//mNodes[i][j + 1];//
             } else {
                 returnNode = mNodes[i][j - 1];
             }
@@ -64,7 +63,7 @@ namespace SandPile {
         public SandPileNode getRight(int i, int j) {
             SandPileNode returnNode = null;
             if (j == mNodes[i].Length - 1) {
-                returnNode = mNodes[i][0];
+                returnNode = mNodes[i][0];//mNodes[i][j - 1];//
             } else {
                 returnNode = mNodes[i][j + 1];
             }
@@ -77,7 +76,7 @@ namespace SandPile {
         public SandPileNode getUp(int i, int j) {
             SandPileNode returnNode = null;
             if (i == 0) {
-                returnNode = mNodes[mNodes.Length - 1][j];
+                returnNode = mNodes[mNodes.Length - 1][j];//mNodes[i + 1][j];
             } else {
                 returnNode = mNodes[i - 1][j]; 
             }
@@ -90,7 +89,7 @@ namespace SandPile {
         public SandPileNode getDown(int i, int j) {
             SandPileNode returnNode = null;
             if (i == mNodes.Length - 1) {
-                returnNode = mNodes[0][j];
+                returnNode = mNodes[0][j];//mNodes[i - 1][j];//
             } else {
                 returnNode = mNodes[i + 1][j];
             }
@@ -181,14 +180,15 @@ namespace SandPile {
                 yield return getLeftTuple(i, j);
             }
 
+            neighbourTuple = getRightTuple(i, j);
+            if (neighbourTuple != null)
+            {
+                yield return getRightTuple(i, j);
+            }
+
             neighbourTuple = getUpTuple(i, j);
             if (neighbourTuple != null) {
                 yield return getUpTuple(i, j);
-            }
-
-            neighbourTuple = getRightTuple(i, j);
-            if (neighbourTuple != null) {
-                yield return getRightTuple(i, j);
             }
 
             neighbourTuple = getDownTuple(i, j);
@@ -321,6 +321,8 @@ namespace SandPile {
             fill();
         }
 
+
+        private static Random randomGen = new Random(DateTime.Now.Millisecond);
         public void doTasksStep() {
             for (int i = 0; i < mNodes.Length; ++i) {
                 for (int j = 0; j < mNodes[i].Length; ++j) {
@@ -330,10 +332,61 @@ namespace SandPile {
                     if (currentNode.Count == SN) {
                         currentNode.Count = currentNode.Count - SN;// getNumOfNeighbours(i, j);
                         //Console.WriteLine("[" + i + ", " + j + "] = " + getNumOfNeighbours(i, j));
-                        int decreaseCount = 0;
                         IEnumerable<SandPileNode> neighbours = getNeighbours(i, j);
-                        neighbours = neighbours.OrderBy(el => randomGen.Next());
-                        //Console.WriteLine("ordered list is " + neighbours.Max());
+                        //IEnumerable<Tuple<int, int>> neighboursIndices = getNeighboursTuples(i, j);
+                        int direction = 0;
+                        if (isBorderTuple(Tuple.Create<int, int>(i, j))) {
+                            direction = getRightDirection(Tuple.Create<int, int>(i, j));
+                        }
+
+                        if (direction == 0)
+                        {
+                            int counter = 0;
+                            double nextRandomDouble = randomGen.NextDouble();
+                            neighbours = neighbours.OrderBy(el =>
+                            {
+                                counter++;
+                                if (counter > 4)
+                                {
+                                    counter = 1;
+                                }
+                                int returnValue = 1;
+                                switch (counter)
+                                {
+                                    case 1: returnValue = (nextRandomDouble >= 0.4 && nextRandomDouble < 0.9) ? 1000 : 1;
+                                        break;
+                                    case 2: returnValue = (nextRandomDouble > 0.9) ? 1000 : 1;
+                                        break;
+                                    case 3: returnValue = (nextRandomDouble < 0.4) ? 1000 : 1;
+                                        break;
+                                    case 4: returnValue = (nextRandomDouble > 0.9) ? 1000 : 1;
+                                        break;
+                                    default:
+                                        throw new ArgumentException("Error");
+                                }
+
+                                return -returnValue;
+                            });
+
+                        }
+                        else {
+                            int counter = 0;
+                            neighbours = neighbours.OrderBy(el => {
+                                counter++;
+                                if (counter > 4)
+                                {
+                                    counter = 1;
+                                }
+                                int returnValue = 1;
+                                if (counter == direction)
+                                {
+                                    returnValue = 1000;
+                                }
+                                return -returnValue;
+                            });
+                        }
+                        //neighbours = neighbours.OrderBy(el => el.getBoost());
+                        //Console.WriteLine("ordered list is " + neighbours.Max().ToString());
                         foreach (SandPileNode node in neighbours) {
                             //if (!node.isBusy)
                             {
@@ -342,11 +395,9 @@ namespace SandPile {
                                 {
                                     node.addTask(currentNode.popTask());
                                 }
-                                decreaseCount++;
                                 //Array.Sort(node.Tasks);
                             }
                         }
-                        //currentNode.Count = currentNode.Count - decreaseCount;
 
                     }
 
@@ -368,6 +419,44 @@ namespace SandPile {
                     }
                 }
             }
+        }
+
+        private int getRightDirection(Tuple<int, int> tuple)
+        {
+            if (tuple.Item1 == 0 && tuple.Item2 != 0 && tuple.Item2 != mNodes.Length) {
+                return randomGen.Next() % 3 == 0 ? 4 : randomGen.Next() % 2 == 0 ? 1 : 2;
+            }
+            else if (tuple.Item1 == 0) {
+                return 4;
+            }
+            
+            if (tuple.Item1 == mNodes.Length && tuple.Item2 != 0 && tuple.Item2 != mNodes.Length) {
+                return randomGen.Next() % 3 == 0 ? 3 : randomGen.Next() % 2 == 0 ? 1 : 2;
+            } else if(tuple.Item1 == mNodes.Length) {
+                return 3;
+            }
+
+            if (tuple.Item2 == 0 && tuple.Item1 != 0 && tuple.Item1 != mNodes.Length) {
+                return randomGen.Next() % 3 == 0 ? 2 : randomGen.Next() % 2 == 0 ? 3 : 4;
+            }
+            else if (tuple.Item2 == 0) {
+                return 2;
+            }
+
+            if (tuple.Item2 == mNodes.Length && tuple.Item1 != 0 && tuple.Item1 != mNodes.Length)
+            {
+                return randomGen.Next() % 3 == 0 ? 1 : randomGen.Next() % 2 == 0 ? 3 : 4;
+            }
+            else if (tuple.Item2 == mNodes.Length) {
+                return 1;
+            }
+            return 0;
+        }
+
+        private bool isBorderTuple(Tuple<int, int> tuple)
+        {
+            return tuple.Item1 == 0 || tuple.Item1 == mNodes.Length
+                || tuple.Item2 == 0 || tuple.Item2 == mNodes.Length;
         } 
         
         public int getActiveTaskCount() {

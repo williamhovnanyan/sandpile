@@ -270,9 +270,10 @@ namespace SandPile {
 
                     for (int k = 0; k < count; ++k)
                     {
-                        if (matrix.Nodes[i][j].isEnabled)
+                        if (matrix.Nodes[i][j].isEnabled) {
                             matrix.Nodes[i][j].isBusy = false;
                             matrix.Nodes[i][j].addTask(time);
+                        }
                     }
 
                     if (checkBoxEnergyAware.Checked) {
@@ -305,21 +306,24 @@ namespace SandPile {
                         }
                     }
                     nodes[i][j].isBusy = isNodeBusy;
-/*
-                    Random randomGen = new Random();
-                    List<int> randomIdxList = new List<int>();
-                    while (randomIdxList.Count <= neededNodeCount) {
-                        int nextRandomIdx = randomGen.Next(nodes.Length * nodes[i].Length);
-                        if (!randomIdxList.Contains(nextRandomIdx)) {
-                            randomIdxList.Add(nextRandomIdx);
-                        }
-                    }
-    */
+
                     if (i * nodes.Length + j < neededNodeCount) {
                         nodes[i][j].isBusy = false;
                     }
                 }
-            }            
+            }
+
+            /*
+            for (int i = 0; i < nodes.Length; ++i)
+            {
+                for (int j = 0; j < nodes[i].Length; ++j)
+                {
+                    if (!nodes[i][j].isBusy) {
+                        nodes[i][j].setBoost();
+                    }               
+                }
+            }
+             * */
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)

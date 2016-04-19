@@ -5,12 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SandPile {
-    public class SandPileNode {
+    public class SandPileNode :IComparable {
         public static readonly int TasksCount = 7;
         private int mCount;
         private bool mHasInfo;
         private bool mIsEnabled;
         private int[] tasks = new int[TasksCount];
+        private static Random randomGen = new Random();
+        private int boost = 0;
 
         public SandPileNode() {
             isEnabled = true;
@@ -87,6 +89,44 @@ namespace SandPile {
         {
             get;
             set;
+        }
+
+        public int getBoost()
+        {
+            //if (this.boost == 0) {
+                if (randomGen.NextDouble() < 0.9)
+                {
+                    this.boost = 3;
+                }
+                else {
+                    this.boost = randomGen.Next(1, 5);
+                }
+            //}
+           
+            return this.boost;
+        }
+
+        public override string ToString()
+        {
+            return "boost = " + this.boost ;
+        }
+
+        public int CompareTo(object obj) {
+            if (obj == null) return 1;
+
+            SandPileNode sandPileNode = obj as SandPileNode;
+            if (sandPileNode != null)
+            {
+                return this.boost.CompareTo(sandPileNode.boost);
+            }
+            else {
+                throw new ArgumentException("Object is not an SandPileNode");
+            }
+        }
+
+        internal void setBoost(int boost)
+        {
+            this.boost = boost;
         }
     }
 }
